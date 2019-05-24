@@ -1,0 +1,26 @@
+1.使用cookie简单的登录验证
+做一个规定：如果cookie中有username，则为登录状态；如果没有，则不是登录状态。
+登录操作成功时，设置cookie：
+res.setHeader('Set-Cookie',`username=${data.username}; path=/ `)
+操作cookie,设置username和path,path=/表示cookie要适用于根目录，如果没有设置path=/,默认为path=/api/user/login,
+只有在访问“http://localhost:3000/api/user/login”或者“http://localhost:3000/api/user/login/xxx”时cookie才起作用，
+所以需要设置path=/,这样在访问任意“http://localhost:3000/xxx...”时cookie都会起作用，才能保证登录状态的正确验证
+
+2.对于前端修改cookie的限制
+由于前端可以通过document.cookie='key=value'来篡改username的值，这样很危险，所以要做限制，就往cookie里设置httpOnly。
+这样前端再使用document.cookie修改cookie时就无效了
+res.setHeader('Set-Cookie',`username=${data.username};path=/;httpOnly`)
+
+3.cookie的过期时间
+设置expires
+const getCookieExpires = () => {
+  const d = new Date()
+  d.setTime(d.getTime()+(24*60*60*1000)) // 加上一天
+  console.log(d.toGMTString())
+  return d.toGMTString()
+}
+res.setHeader('Set-Cookie', `username=${data.username};path=/;httpOnly;expires=${getCookieExpires()}`)
+
+4.使用cookie验证登录存在的问题
+会暴露username,很危险。
+解决：cookie中存储userid,在server端对应username
