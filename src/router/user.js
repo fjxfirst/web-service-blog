@@ -1,6 +1,6 @@
 const {login} = require('../controller/user')
 const {SuccessModel, ErrorModel} = require('../model/resMode')
-
+const { set } = require('../db/redis')
 //设置cookie的过期时间
 const getCookieExpires = () => {
   const d = new Date()
@@ -13,9 +13,8 @@ const handleUserRouter = (req, res) => {
   const method = req.method
   const path = req.path
   //登录
-  if (method === 'GET' && path === '/api/user/login') {//todo 改回POST
-    // const {username, password} = req.body
-    const {username, password} = req.query
+  if (method === 'POST' && path === '/api/user/login') {//todo 改回POST
+    const {username, password} = req.body
     const result = login(username, password)
 
     return result.then(data => {
@@ -28,21 +27,22 @@ const handleUserRouter = (req, res) => {
         // 设置session
         req.session.username=data.username
         req.session.realname=data.realname
-        console.log(req.session)
+        // 同步到 redis
+        set(req.sessionId, req.session)
         return new SuccessModel('登录成功')
       }
-      new ErrorModel('登录失败')
+      return new ErrorModel('登录失败')
       // return data.username ? new SuccessModel('登录成功') : new ErrorModel('登录失败')
     })
   }
   //登录验证的测试，开发时可以通过该路由测试
-  if(method==='GET'&&req.path==='/api/user/logintest'){
+  /*if(method==='GET'&&req.path==='/api/user/logintest'){
     if(req.session.username){
       return Promise.resolve(new SuccessModel({
         username:req.session
       }))
     }
     return Promise.resolve(new ErrorModel('尚未登录'))
-  }
+  }*/
 }
 module.exports = handleUserRouter
