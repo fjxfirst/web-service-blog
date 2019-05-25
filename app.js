@@ -66,14 +66,13 @@ const serverHandle = (req, res) => {
     if (!SESSION_DATA[userId]) {
       SESSION_DATA[userId] = {}
     }
-    SESSION_DATA[userId] = {}
   } else {
     needSetCookie = true // needSetCookie为true表示如果cookie中没有userid则需要设置，false就不需要设置
     userId = `${Date.now()}_${Math.random()}` //保证每次不会重复
     SESSION_DATA[userId] = {}
   }
   req.session = SESSION_DATA[userId]
-
+  console.log('session值为',req.session)
   //解析post body
   getPostData(req).then(postData => {
     req.body = postData

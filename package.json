@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
     "pro": "cross-env NODE_ENV=production nodemon ./bin/www.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_ENV=test nodemon ./bin/www.js"
   },
   "keywords": [],
   "author": "fjxfirst",
@@ -16,6 +16,7 @@
     "nodemon": "^1.19.0"
   },
   "dependencies": {
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "redis": "^2.8.0"
   }
 }
