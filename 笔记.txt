@@ -67,3 +67,14 @@ access.log存储访问日志
 error.log存储错误日志
 event.log存储自定义日志
 
+8.安全
+①sql注入
+使用mysql.escape可以避免,在使用有变量拼接的sql语句都要使用escape方法以避免sql注入
+const login = (username, password) => {
+  username=escape(username)
+  password=escape(password)
+  const sql = `select username,realname from users where username=${username} and password=${password}`
+  return exec(sql).then(rows => {
+    return rows[0] || {}
+  })
+}
