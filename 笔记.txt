@@ -61,3 +61,9 @@ location /api/ {  #表示访问 /api/ 时代理到3001
           proxy_set_header Host $host;
 }
 使用命令nginx启动nginx，访问http://localhost:8080/index.html进行联调
+
+7.日志
+access.log存储访问日志
+error.log存储错误日志
+event.log存储自定义日志
+
