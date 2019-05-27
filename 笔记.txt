@@ -23,4 +23,41 @@ res.setHeader('Set-Cookie', `username=${data.username};path=/;httpOnly;expires=$
 
 4.使用cookie验证登录存在的问题
 会暴露username,很危险。
-解决：cookie中存储userid,在server端对应username
+解决：cookie中存储userid,在server端对应username。
+使用session存储username,根据userid找到对应的session
+
+5.使用redis存储session
+这样使用session依然存在一些问题：
+①由于session存储的数据在内存中，如果数据越来越多会造成服务端程序崩溃
+②多进程无法共享session
+使用redis，Redis是一个高性能的key-value数据库，内存数据库，session很适合用redis存储，将session存储到redis中，可以解决以上两个问题。
+下载安装：https://www.runoob.com/redis/redis-install.html
+使用redis,打开一个 cmd 窗口在redis的根目录下使用命令：redis-server.exe。
+另打开一个 cmd 窗口，使用命令：redis-cli.exe -h 127.0.0.1 -p 6379
+设置键值对命令：set mykey abc
+取出键对应的值：get mykey
+node连接redis，安装redis包npm install redis --save
+
+const redis=require('redis')
+//创建redis客户端,参数为端口号，IP
+const redisClient=redis.createClient(6379,127.0.0.1)
+//设置键值对
+redisClient.set(key,val,redis.print)
+//取值
+redisClient.get(key,(err,val)=>{})
+
+6.使用nginx反向代理，进行前后端联调
+前端页面的访问使用http-server,安装npm install http-server,在html页面的目录下使用 npx http-server -p 3001
+http://127.0.0.1:3001/xxx.html访问，显然后端的端口是3000,存在跨域无法联调，这里介绍如何使用nginx进行反向代理联调。
+下载nginx：http://nginx.org/en/download.html
+在nginx目录下修改配置文件nginx.conf,在server中配置
+listen:8080   #表示nginx监听的端口号
+location / {  #表示访问根路径时代理到3001
+          proxy_pass http://localhost:3001;
+        }
+
+location /api/ {  #表示访问 /api/ 时代理到3001
+          proxy_pass http://localhost:3000;
+          proxy_set_header Host $host;
+}
+使用命令nginx启动nginx，访问http://localhost:8080/index.html进行联调

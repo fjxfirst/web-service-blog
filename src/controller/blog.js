@@ -2,7 +2,7 @@ const {exec} = require('../db/mysql')
 const getList = (author, keyword) => {
   let sql = `select * from blogs where 1=1 ` //如果没有where 1=1,sql就会错误变成select * from blogs and author=feng
   if (author) {
-    sql += `and author=${author}`
+    sql += `and author='${author}'`
   }
   if (keyword) {
     sql += `and title like '%${keyword}%'`
