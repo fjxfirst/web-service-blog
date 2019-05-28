@@ -13,7 +13,7 @@ const handleUserRouter = (req, res) => {
   const method = req.method
   const path = req.path
   //登录
-  if (method === 'POST' && path === '/api/user/login') {//todo 改回POST
+  if (method === 'POST' && path === '/api/user/login') {
     const {username, password} = req.body
     const result = login(username, password)
 

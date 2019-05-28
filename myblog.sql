@@ -14,3 +14,7 @@ CREATE TABLE `myblog`.`blogs` (
 
 INSERT INTO `myblog`.`users`(`username`,`password`,`realname`) VALUES ('zhangsan','123','张三');
 INSERT INTO `myblog`.`blogs`(`title`,`content`,`createtime`,`author`) VALUES ('标题','内容A',1558757033578,'zhangsan');
+
+ALTER TABLE `myblog-test`.`users`
+CHANGE COLUMN `password` `password` VARCHAR(32) NOT NULL ;
+-- 使用update语句时，报错you are using safe mode...,要执行SET SQL_SAFE_UPDATES=0;解决

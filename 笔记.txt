@@ -78,3 +78,8 @@ const login = (username, password) => {
     return rows[0] || {}
   })
 }
+②xss攻击
+安装xss包，npm install xss,使用时将可能被注入的变量作为参数调用xss方法
+const xss =require('xss')
+const title=xss(blogData.title)
+③密码加密
