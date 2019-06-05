@@ -85,3 +85,21 @@ const title=xss(blogData.title)
 ③密码加密
 9.使用express框架
 安装npm install express-generator -g
+10.使用express-session和connect-redis
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
+const redisClient = require('./db/redis')
+const sessionStore = new RedisStore({
+  client: redisClient
+})
+app.use(session({
+  secret: 'abc',
+  resave: true,
+  saveUninitialized: true,
+  store: sessionStore,
+  cookie: {
+    path: '/', //根路径下cookie都会生效,默认配置
+    httpOnly: true, // 默认配置
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}))
