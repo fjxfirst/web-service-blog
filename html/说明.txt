@@ -1,0 +1,6 @@
+index.html为博客首页
+detail.html为博文详情
+admin.html为博客管理中心
+new.html为创建博客  即“新增”
+edit.html为编辑博客页面  即“修改”
+login.html为登录页面

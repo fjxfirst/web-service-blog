@@ -11,7 +11,7 @@ if (env === 'dev') {
   }
   REDIS_CONF={
     port:6379,
-    host:'129.28.21.38'
+    host:'127.0.0.1'
   }
 } else if (env === 'production') {
   MYSQL_CONF = {

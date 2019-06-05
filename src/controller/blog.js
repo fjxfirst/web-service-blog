@@ -18,7 +18,7 @@ const getDetail = (id) => {
   })
 }
 const newBlog = (postData = {}) => {
-  const title =xss(postData.title) // 使用xss方法预防xss攻击
+  const title = xss(postData.title) // 使用xss方法预防xss攻击
   const {content, author} = postData
   const createTime = Date.now()
   const sql = `insert into blogs (title,content,createtime,author) values ('${title}','${content}','${createTime}','${author}')`
